@@ -40,5 +40,10 @@ public class EstudiantesController {
     public void eliminarEstudiante(@PathVariable Long id ){
         estudiantesService.eliminarEstudiante(id);
     }
-}
 
+    @GetMapping("/promedioByGrado/{grados}")
+   public String promedioByGrado(@PathVariable String grados) {
+    return estudiantesService.promedioByGrado(grados);
+    }
+
+}
