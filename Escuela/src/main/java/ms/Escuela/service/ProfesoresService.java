@@ -1,6 +1,9 @@
 package ms.Escuela.service;
 
+import ms.Escuela.entity.Asignaturas;
+import ms.Escuela.entity.Calificaciones;
 import ms.Escuela.entity.Profesores;
+import ms.Escuela.repository.CalificacionesRepository;
 import ms.Escuela.repository.ProfesoresRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -12,6 +15,8 @@ import java.util.Optional;
 public class ProfesoresService {
     @Autowired
     ProfesoresRepository profesoresRepository;
+    @Autowired
+    CalificacionesRepository calificacionesRepository;
 
     public Profesores guardarProfesores(Profesores profesores){
         return profesoresRepository.save(profesores);
@@ -42,6 +47,18 @@ public class ProfesoresService {
         } else {
             return "No se encontró un profesor con ID " + id + ".";
         }
-
+    }
+    public String promedioByProfesor(Long id){
+          Optional<Profesores> cIfPexist=profesoresRepository.findById(id);
+          if(cIfPexist.isPresent()){
+              Long idAsinatura=cIfPexist.get().getId();
+              List<Calificaciones> listcali=calificacionesRepository.findByAsignaturaId(idAsinatura);
+              for (Calificaciones calificaciones:listcali) {
+                 Double calificacion=calificaciones.getCalificacion();
+              }
+              return ""+cal+"";
+          }else {
+              return null;
+          }
     }
 }

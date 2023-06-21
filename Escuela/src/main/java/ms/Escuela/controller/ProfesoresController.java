@@ -31,9 +31,13 @@ public class ProfesoresController {
     public Profesores editarProfesor(@RequestBody Profesores profesores){
         return profesoresService.editarProfesor(profesores);
     }
-
     @DeleteMapping("/eliminar/{id}")
     public String eliminarProfesor(@PathVariable Long id) {
         return profesoresService.eliminarProfesor(id);
+    }
+    @GetMapping("/promedioByProfesor/{id}")
+    public String promedioAlumnosByProfesor(@PathVariable Long id){
+
+        return profesoresService.promedioByProfesor(id);
     }
 }
