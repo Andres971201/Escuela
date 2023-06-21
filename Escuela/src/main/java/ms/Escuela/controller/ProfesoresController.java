@@ -3,10 +3,10 @@ package ms.Escuela.controller;
 import ms.Escuela.entity.Profesores;
 import ms.Escuela.service.ProfesoresService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/profesores")
@@ -18,5 +18,22 @@ public class ProfesoresController {
     public Profesores guardarProfesores(@RequestBody Profesores profesores){
         return profesoresService.guardarProfesores(profesores);
     }
+    @GetMapping("/buscarProfesores")
+    public List<Profesores> buscarProfesores(){
+        return profesoresService.buscarprofesores();
+    }
+    @GetMapping("/buscaId/{id}")
+    public Optional<Profesores> buscarById(@PathVariable Long id){
+        return profesoresService.buscarById(id);
+    }
 
+    @PutMapping("/actualizar")
+    public Profesores editarProfesor(@RequestBody Profesores profesores){
+        return profesoresService.editarProfesor(profesores);
+    }
+
+    @DeleteMapping("/eliminar/{id}")
+    public String eliminarProfesor(@PathVariable Long id) {
+        return profesoresService.eliminarProfesor(id);
+    }
 }
