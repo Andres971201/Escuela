@@ -14,7 +14,7 @@ public class Asignaturas {
     @Column(name = "nombre")
     private String nombres;
 
-    @Column(name = "profesoresId")
+    @Column(name = "profesor_id")
     private Long profesorId;
 
     public Asignaturas() {
