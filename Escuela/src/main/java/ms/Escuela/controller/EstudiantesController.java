@@ -1,12 +1,13 @@
 package ms.Escuela.controller;
 
+import ms.Escuela.entity.Asignaturas;
 import ms.Escuela.entity.Estudiantes;
 import ms.Escuela.service.EstudiantesService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/estudiantes")
@@ -18,4 +19,26 @@ public class EstudiantesController {
     public Estudiantes guardarEstudiantes(@RequestBody Estudiantes estudiantes){
         return estudiantesService.guardarEstudiante(estudiantes);
     }
+
+    @GetMapping("/buscarEstudiantes")
+    public List<Estudiantes> buscarAsignaturas(){
+        return estudiantesService.buscarEstudiantes();
+    }
+
+    @GetMapping("/buscarId/{id}")
+    public Optional<Estudiantes> buscarId(@PathVariable Long id){
+        return estudiantesService.buscarId(id);
+    }
+
+    @GetMapping("/actualizar")
+    public Estudiantes  actualizarEstudiante(@RequestBody Estudiantes estudiantes){
+        return estudiantesService.actualizarEstudiantes(estudiantes);
+
+    }
+
+    @DeleteMapping("/eliminar")
+    public void eliminarEstudiante(@PathVariable Long id ){
+        estudiantesService.eliminarEstudiante(id);
+    }
 }
+
