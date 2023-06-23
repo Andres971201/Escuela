@@ -3,6 +3,7 @@ package ms.Escuela.service;
 import ms.Escuela.entity.Asignaturas;
 import ms.Escuela.entity.Calificaciones;
 import ms.Escuela.entity.Estudiantes;
+import ms.Escuela.entity.Profesores;
 import ms.Escuela.repository.CalificacionesRepository;
 import ms.Escuela.repository.EstudiantesRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -53,25 +55,33 @@ public class EstudiantesService {
     }
 
     public String promedioByGrado(String grados) {
-        List<Estudiantes> listGrados = estudiantesRepository.findByGrados(grados);
-        List<Calificaciones> calificacion = null;
-        Double cali = null;
-        if (!listGrados.isEmpty()) {
-            for (Estudiantes estudientes : listGrados) {
-                Long idAlumnos = estudientes.getId();
-                Optional<Calificaciones> caliAlumnos = calificacionesRepository.findById(idAlumnos);
-                calificacion = Collections.singletonList(caliAlumnos.get());
-                for (Calificaciones cal : calificacion) {
-                    cali = cal.getCalificacion();
+        List<Estudiantes> cIfPexist = estudiantesRepository.findByGrados(grados);
+        List<Double> promediosIndividuales = new ArrayList<>();
+        Double promedioGeneral = 0.0;
 
+        if (cIfPexist != null) {
+            for (Estudiantes estudiante : cIfPexist) {
+                Long estudianteId = estudiante.getId();
+                List<Calificaciones> calificaciones = calificacionesRepository.findByEstudianteId(estudianteId);
+                Double sumaCalificaciones = 0.0;
 
+                for (Calificaciones calificacion : calificaciones) {
+                    sumaCalificaciones += calificacion.getCalificacion();
                 }
+
+                Double promedioEstudiante = calificaciones.isEmpty() ? 0.0 : sumaCalificaciones / calificaciones.size();
+                promediosIndividuales.add(promedioEstudiante);
             }
+
+            Double sumaPromedios = 0.0;
+            for (Double promedio : promediosIndividuales) {
+                sumaPromedios += promedio;
+            }
+
+            promedioGeneral = promediosIndividuales.isEmpty() ? 0.0 : sumaPromedios / promediosIndividuales.size();
         } else {
-
             return null;
-
         }
-        return "" + cali + "";
-    }
-}
+
+        return "El promedio del grupo " + grados + " es de " + promedioGeneral;
+    }}

@@ -10,4 +10,6 @@ import java.util.List;
 public interface CalificacionesRepository extends JpaRepository<Calificaciones,Long> {
 
     List<Calificaciones> findByAsignaturaId(Long idAsinatura);
+
+    List<Calificaciones> findByEstudianteId(Long estudianteId);
 }

@@ -8,6 +8,7 @@ import ms.Escuela.repository.ProfesoresRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -48,17 +49,31 @@ public class ProfesoresService {
             return "No se encontró un profesor con ID " + id + ".";
         }
     }
-    public String promedioByProfesor(Long id){
-          Optional<Profesores> cIfPexist=profesoresRepository.findById(id);
-          if(cIfPexist.isPresent()){
-              Long idAsinatura=cIfPexist.get().getId();
-              List<Calificaciones> listcali=calificacionesRepository.findByAsignaturaId(idAsinatura);
-              for (Calificaciones calificaciones:listcali) {
-                 Double calificacion=calificaciones.getCalificacion();
-              }
-              return ""+cal+"";
-          }else {
-              return null;
-          }
+    public String promedioByProfesor(Long id) {
+        Profesores cIfPexist = profesoresRepository.findById(id).orElse(null);
+
+        if (cIfPexist != null) {
+            Long idAsignatura = cIfPexist.getId();
+            List<Calificaciones> listcali = calificacionesRepository.findByAsignaturaId(idAsignatura);
+
+            List<Double> listcal = new ArrayList<>();
+
+            for (Calificaciones calificacion : listcali) {
+                Double calificacionValor = calificacion.getCalificacion();
+                listcal.add(calificacionValor);
+            }
+
+            Double sumaDeLista = 0.0;
+
+            for (Double num : listcal) {
+                sumaDeLista += num;
+            }
+
+            Double promedio = sumaDeLista / listcal.size();
+
+            return String.valueOf(promedio);
+        } else {
+            return null;
+        }
     }
 }

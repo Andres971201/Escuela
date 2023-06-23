@@ -43,7 +43,8 @@ public class EstudiantesController {
 
     @GetMapping("/promedioByGrado/{grados}")
    public String promedioByGrado(@PathVariable String grados) {
-    return estudiantesService.promedioByGrado(grados);
+
+        return estudiantesService.promedioByGrado(grados);
     }
 
 }
